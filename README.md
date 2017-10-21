@@ -20,8 +20,9 @@ The report generates average values based on times of the day to provide a
 general idea of the temperature at any time.
 
 # Future Possible Additions
+- Update data beyond the default 15 hours on Weather.com hourly forecast. (Less accurate however)
+- Process data from most recent to most early for more accuracy.
 - Add compatibility with areas outside of USA.
 - Add weather prediction capability.
-- Update data beyond the default 15 hours on Weather.com hourly forecast. (Less accurate)
-- Process data from most recent to most early.
 - Scheduled weather updating system.
+- Add additional weather sources.
