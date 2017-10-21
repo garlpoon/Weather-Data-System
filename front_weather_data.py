@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
+# Allows QLineEdit to have a clicked event.
 class ClickLineEdit(QLineEdit):
     clicked = pyqtSignal()
     def mousePressEvent(self, event):

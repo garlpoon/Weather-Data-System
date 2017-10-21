@@ -8,6 +8,10 @@ import geocoder as gc, csv, sys, datetime
 import front_weather_data as front_end
 import os.path
 
+# Tied to Update data button, it gathers data of the area specified by the address provided by the user.
+# Takes an address and goes through a geocoder to gather the zip code. The current system is limited
+# to the United States. Also, if the weather.com html structure changes, it will fail to gather the data
+# properly. 
 def gather_data():
 	ui.updateButton.setEnabled(False)
 	address_str = str(ui.addressBox.text())
@@ -53,6 +57,8 @@ def gather_data():
 
 	ui.updateButton.setEnabled(True)
 
+# Warning message for users that provide addresses with not enough information for google to 
+# find the zip code.
 def invalid_address():
 	warningMsg = QMessageBox()        
 	warningMsg.setIcon(QMessageBox.Warning)       
@@ -64,6 +70,7 @@ def invalid_address():
 	warningMsg.setEscapeButton(QMessageBox.Close)
 	warningMsg.exec_() 
 
+# Warning message that program doesn't have any weather data to analyze yet.
 def missing_data(path):
 	warningMsg = QMessageBox()        
 	warningMsg.setIcon(QMessageBox.Warning)       
@@ -75,6 +82,7 @@ def missing_data(path):
 	warningMsg.setEscapeButton(QMessageBox.Close)
 	warningMsg.exec_() 
 
+# Informs user that the weather has successfully been gathered.
 def update_success(char):
 	successMsg = QMessageBox()        
 	successMsg.setWindowIcon(QtGui.QIcon("assets\icon.png"))
@@ -86,17 +94,35 @@ def update_success(char):
 		msg = 'updated.'
 
 	successMsg.setText("The file named weather_data.csv has been successfully " + msg) 
-	successMsg.setWindowTitle("Updated Weather Data") 
+	successMsg.setWindowTitle(msg.capitalize()[:-1] + " Weather Data") 
 	successMsg.setStandardButtons(QMessageBox.Ok)       
 	successMsg.setEscapeButton(QMessageBox.Close)
 	successMsg.exec_() 
 
+# Informs user that the weather has successfully been analyzed and put in a .csv report file.
+# The report shows the averages of the weather at each particular time. The idea is that
+# we can neatly see what the average temperature has been lately at any given time along 
+# with all the other details.
+def created_report():
+	successMsg = QMessageBox()        
+	successMsg.setWindowIcon(QtGui.QIcon("assets\icon.png"))
+	successMsg.setIcon(QMessageBox.Information)      
+	name = str(ui.nameBox.text())
+	successMsg.setText("The file named " + name + ".csv has been successfully created.") 
+	successMsg.setWindowTitle("Created Weather Report") 
+	successMsg.setStandardButtons(QMessageBox.Ok)       
+	successMsg.setEscapeButton(QMessageBox.Close)
+	successMsg.exec_() 
+
+# Checks path to see if it exists to determine if the header line needs to be added along
+# with some small wording details.
 def file_check(file_path):
 	if(os.path.exists(file_path)):
 		return 'a'
 	else:
 		return 'w'
 
+# Method for writing data to csv file.
 def write_csv(list_data, mode):
 	with open('weather_data.csv', mode, newline='') as myfile:
 	    wr = csv.writer(myfile, delimiter=',', quoting=csv.QUOTE_NONE)
@@ -113,9 +139,9 @@ def write_csv(list_data, mode):
 
 	myfile.close()
 
+# Method for analyzing all the data gathered in the form of averages and most commonly directed winds.
 def analyze_data():
 	if(file_check(file_path) == 'a'):
-		print("great")
 		file = open(file_path, newline='')
 		reader = csv.reader(file)
 		header = next(reader)
@@ -175,19 +201,19 @@ def analyze_data():
 			writer.writerow([current_time, avg_temp, avg_precip, avg_humid, mst_cmn_wdir, avg_wspd, counted_time])
 
 		file.close()
-		print("File report created!")
+		created_report()
 	else:
 		missing_data(file_path)
 
-
+# Check to see if the default texts is still there in order to clear it on click if that is the case.
 def clear_address():
 	if(str(ui.addressBox.text()) == "Enter your address for a weather update"):
 		ui.addressBox.setText('')
-
 def clear_file_name():
 	if(str(ui.nameBox.text()) == "Enter a name for the weather report file"):
 		ui.nameBox.setText('')
 
+# Main method for connecting buttons to methods, setting up the graphical user interface, etc.
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
 
@@ -208,6 +234,6 @@ if __name__ == "__main__":
 
     file_path = 'weather_data.csv'
 
-    ui.createButton.setFocus()
+    ui.createButton.setFocus() # Makes default focus not visible.
     form.show()
     sys.exit(app.exec_())
