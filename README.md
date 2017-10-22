@@ -14,6 +14,9 @@ Then, press enter or press the button titled "Create Report".
 This creates a .csv file named after the name that was typed on the lower text box 
 in the folder containing the code.
 
+# Current Issue
+The data being analyzed is not being organized and presented properly. It needs to be worked out.
+
 # Use
 The user should gather data day by day to provide more data for the program.
 The report generates average values based on times of the day to provide a 
