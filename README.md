@@ -15,7 +15,7 @@ This creates a .csv file named after the name that was typed on the lower text b
 in the folder containing the code.
 
 # Current Issue
-The data being analyzed is not being organized and presented properly. It needs to be worked out.
+The data being analyzed is not being organized and presented properly. It needs to be worked out if project is continued.
 
 # Use
 The user should gather data day by day to provide more data for the program.
